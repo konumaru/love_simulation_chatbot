@@ -156,7 +156,7 @@ def main():
     first_talk = bot.first_talk()
     print(first_talk)
 
-    print("-" * 20)
+    print("-" * 20, "\n")
 
     response = bot.talk("2")
     print(response)
