@@ -53,7 +53,7 @@ def handle_message(event):
     if event_text == "start":
         message += bot.first_talk()
     elif event_text == "base_data":
-        message = bot.get_base_data()
+        message = bot.base_data
     else:
         message = bot.talk(event_text)
 
