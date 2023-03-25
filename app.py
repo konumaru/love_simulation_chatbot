@@ -9,17 +9,10 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from src.bot import Bot
 
 app = Flask(__name__)
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=10)
-
-# 環境変数取得
-YOUR_CHANNEL_ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
-YOUR_CHANNEL_SECRET = os.environ["CHANNEL_SECRET"]
-
-line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
-handler = WebhookHandler(YOUR_CHANNEL_SECRET)
-
 
 bot = Bot()
+line_bot_api = LineBotApi(os.environ["ACCESS_TOKEN"])
+handler = WebhookHandler(os.environ["CHANNEL_SECRET"])
 
 
 @app.route("/")
@@ -52,6 +45,8 @@ def handle_message(event):
     message = ""
     if event_text == "start":
         message += bot.first_talk()
+    elif event_text == "init":
+        bot.init_conversation()
     elif event_text == "base_data":
         message = bot.base_data
     else:
@@ -64,5 +59,4 @@ def handle_message(event):
 
 
 if __name__ == "__main__":
-    bot.init_conversation()
     app.run(host="0.0.0.0", port=5000)
