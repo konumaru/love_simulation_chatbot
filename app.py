@@ -49,18 +49,15 @@ def handle_message(event):
 
     if event_text == "start":
         base_data = get_basedata()
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=base_data),
-        )
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text="--" * 10),
-        )
         first_chat = talk(base_data, "それではゲームを開始してください")
+
+        message = ""
+        message += "\n" + "-" * 20
+        message += first_chat
+
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=first_chat),
+            TextSendMessage(text=message),
         )
     else:
         first_chat = talk(base_data, event_text)
