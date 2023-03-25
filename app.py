@@ -49,27 +49,21 @@ def callback():
 def handle_message(event):
     event_text = str(event.message.text)
 
+    message = ""
     if event_text == "start":
-        bot.init_conversation()
-        message = bot.first_talk()
-
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=message),
-        )
+        message += bot.first_talk()
+        message += bot.talk("Start")
+    elif event_text == "base_data":
+        message = bot.get_base_data()
     else:
-        first_chat = bot.talk(event_text)
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=first_chat),
-        )
+        message = bot.talk(event_text)
 
-    # NOTE: Replay the same message.
-    # line_bot_api.reply_message(
-    #     event.reply_token, TextSendMessage(text=event.message.text)
-    # )
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=message),
+    )
 
 
 if __name__ == "__main__":
-    #    app.run()
+    bot.init_conversation()
     app.run(host="0.0.0.0", port=5000)
