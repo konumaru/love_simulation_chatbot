@@ -1,1 +1,1 @@
-web: gunicorn app:app --log-file=- --max-requests 600
+web: gunicorn app:app --log-file=- --timeout 600
