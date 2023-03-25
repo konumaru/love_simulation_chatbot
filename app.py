@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from flask import Flask, abort, request
 from linebot import LineBotApi, WebhookHandler
@@ -8,6 +9,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from src.bot import get_basedata, talk
 
 app = Flask(__name__)
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(minutes=10)
 
 # 環境変数取得
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
@@ -45,32 +47,32 @@ def handle_message(event):
     event_text = str(event.message.text)
     base_data = ""
 
-    try:
-        if event_text == "start":
-            base_data = get_basedata()
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=base_data),
-            )
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text="--" * 10),
-            )
-            first_chat = talk(base_data, "それではゲームを開始してください")
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=first_chat),
-            )
-        else:
-            first_chat = talk(base_data, event_text)
-            line_bot_api.reply_message(
-                event.reply_token,
-                TextSendMessage(text=first_chat),
-            )
-    except Exception as e:
+    if event_text == "start":
+        base_data = get_basedata()
         line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=event.message.text)
+            event.reply_token,
+            TextSendMessage(text=base_data),
         )
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="--" * 10),
+        )
+        first_chat = talk(base_data, "それではゲームを開始してください")
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=first_chat),
+        )
+    else:
+        first_chat = talk(base_data, event_text)
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=first_chat),
+        )
+
+    # NOTE: Replay the same message.
+    # line_bot_api.reply_message(
+    #     event.reply_token, TextSendMessage(text=event.message.text)
+    # )
 
 
 if __name__ == "__main__":

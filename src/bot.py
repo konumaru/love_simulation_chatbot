@@ -1,4 +1,6 @@
 import random
+import time
+from contextlib import contextmanager
 
 from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
@@ -11,6 +13,13 @@ from langchain.prompts import (
     SystemMessagePromptTemplate,
 )
 from langchain.schema import HumanMessage, SystemMessage
+
+
+@contextmanager
+def timer(name):
+    t0 = time.time()
+    yield
+    print(f"[{name}] done in {time.time() - t0:.0f} s")
 
 
 def get_basedata() -> str:
@@ -141,4 +150,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    with timer("[First Run]"):
+        main()
