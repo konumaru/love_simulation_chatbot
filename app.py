@@ -5,6 +5,8 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
+from src.bot import get_basedata
+
 app = Flask(__name__)
 
 # 環境変数取得
@@ -40,9 +42,18 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text=event.message.text)
-    )
+    event_text = str(event.message.text)
+
+    if event_text == "start":
+        base_data = get_basedata()
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=base_data),
+        )
+    else:
+        line_bot_api.reply_message(
+            event.reply_token, TextSendMessage(text=event.message.text)
+        )
 
 
 if __name__ == "__main__":
