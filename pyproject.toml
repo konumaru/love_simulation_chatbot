@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "3.10.8"
+python = "3.10.10"
 fastapi = "^0.92.0"
 uvicorn = {extras = ["standard"], version = "^0.20.0"}
 line-bot-sdk = "^2.4.2"
