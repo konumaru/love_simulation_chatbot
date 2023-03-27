@@ -1,4 +1,5 @@
 ARG PYTHON_VERSION="python3.10"
+
 FROM tiangolo/uvicorn-gunicorn-fastapi:${PYTHON_VERSION}
 
 ENV PYTHONUNBUFFERED 1
@@ -16,5 +17,5 @@ RUN if [ "$DEV" = "true" ] ; then poetry install --with dev ; else poetry instal
 COPY ./app/ ./
 COPY ./prompts/ ./prompts/
 
-EXPOSE 8080
-CMD uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+EXPOSE $PORT
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT --reload

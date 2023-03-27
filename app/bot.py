@@ -138,7 +138,7 @@ class Bot:
         # 会話エンジンの作成
         conversation = ConversationChain(
             verbose=False, memory=memory, prompt=prompt, llm=llm
-        )
+        )  # type: ignore
         self.conversation = conversation
 
     def first_talk(self) -> str:

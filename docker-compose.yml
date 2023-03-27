@@ -6,7 +6,8 @@ services:
       - LINEAPI_ACCESS_TOKEN
       - LINEAPI_CHANNEL_SECRET
       - OPENAI_API_KEY
+      - PORT
     volumes:
       - .:/workspace
     ports:
-      - 8080:8080
+      - ${PORT}:8080
