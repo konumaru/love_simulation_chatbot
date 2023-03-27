@@ -1,3 +1,8 @@
-.PHONY: run
-run:
-	uvicorn app.main:app --reload --host=0.0.0.0
+.PHONY: init
+init:
+	./bin/init_gcp.sh
+
+
+.PHONY: deploy
+deploy:
+	./bin/deploy.sh
