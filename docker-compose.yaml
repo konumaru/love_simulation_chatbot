@@ -7,6 +7,6 @@ services:
       - LINEAPI_CHANNEL_SECRET
       - OPENAI_API_KEY
     volumes:
-      - .:/src
+      - .:/workspace
     ports:
       - 8080:8080
