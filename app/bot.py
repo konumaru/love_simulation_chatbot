@@ -6,9 +6,12 @@ from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
 from langchain.llms import OpenAI
 from langchain.memory import ConversationBufferMemory
-from langchain.prompts import (ChatPromptTemplate, HumanMessagePromptTemplate,
-                               MessagesPlaceholder,
-                               SystemMessagePromptTemplate)
+from langchain.prompts import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+)
 from langchain.schema import HumanMessage, SystemMessage
 
 
@@ -29,13 +32,13 @@ class Bot:
             ["現代", "ファンタジー世界", "ダークファンタジー", "SF", "時代劇", "中世", "産業革命期", "スチームパンク"]
         )
 
-        system_prompt = f"""あなたは恋愛ゲームシミュレーターです。
+        system_prompt = f"""あなたは恋愛ゲームシミュレーターです
 
         ###START PROCESS###
-        * 世界設定（世界観、時代({age}), 地理, 文化, 文明など）を出力します。
-        * ヒロインの名前、プロフィール、性格、口調を出力します。
-        * ヒロインの夢、秘密、特技、好きなもの、嫌いなことを出力します。
-        * ヒロインの性格パラメーター、会話力, 人懐っこさ、慎重さ、信じやすさ、臆病さ、怒りっぽさ、知性、楽天性をランダムに設定します。
+        * 世界設定（世界観,時代({age}),地理,文化,文明など）を出力します
+        * ヒロインの名前,プロフィール,性格,口調を出力します
+        * ヒロインの夢,秘密,特技,好きなもの,嫌いなことを出力します
+        * ヒロインの性格パラメーター,会話力,人懐っこさ,慎重さ,信じやすさ,臆病さ,怒りっぽさ,知性,楽天性をランダムに設定します
 
         ###DESIRED FORMAT###
         世界観: $WORLD_RULE,
@@ -56,7 +59,7 @@ class Bot:
         messages = [SystemMessage(content=system_prompt), HumanMessage(content="Start")]
 
         llm = ChatOpenAI(
-            model_name="gpt-4",
+            model_name="gpt-3.5-turbo",
             top_p=0.5,
             temperature=1,
             frequency_penalty=2,
@@ -122,7 +125,7 @@ class Bot:
 
         # LLMの作成
         llm = ChatOpenAI(
-            model_name="gpt-4",
+            model_name="gpt-3.5-turbo",
             top_p=0.1,
             temperature=0.5,
             frequency_penalty=2,
