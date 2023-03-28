@@ -24,8 +24,9 @@ def timer(name):
 
 class Bot:
     def __init__(self) -> None:
-        self.base_data = self.get_base_data()
-        self.init_conversation()
+        # self.base_data = self.get_base_data()
+        # self.init_conversation()
+        pass
 
     def get_base_data(self) -> str:
         age = random.choices(

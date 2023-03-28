@@ -5,6 +5,8 @@ services:
     environment:
       - LINEAPI_ACCESS_TOKEN
       - LINEAPI_CHANNEL_SECRET
+      - LINEAPI_ACCESS_TOKEN_DEV
+      - LINEAPI_CHANNEL_SECRET_DEV
       - OPENAI_API_KEY
       - PORT
     volumes:
