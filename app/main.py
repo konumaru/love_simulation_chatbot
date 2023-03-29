@@ -1,14 +1,7 @@
 import os
 
 from bot import Bot
-from fastapi import (
-    FastAPI,
-    Header,
-    HTTPException,
-    Request,
-    Response,
-    status,
-)
+from fastapi import FastAPI, Header, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -57,6 +50,10 @@ def handle_message(event):
     event_text = str(event.message.text)
     sender_id = str(event.source.sender_id)
     reply_token = str(event.reply_token)
+
+    # TODO: 初回フォロー時に保存する
+    profile = line_bot_api.get_profile(sender_id)
+    display_name = str(profile.display_name)
 
     message = ""
     # if event_text == "start":
