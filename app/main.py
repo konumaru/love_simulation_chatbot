@@ -1,11 +1,12 @@
 import os
 
-from .bot import ChatBot
 from fastapi import FastAPI, Header, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FollowEvent
+
+from bot import ChatBot
 
 app = FastAPI()
 

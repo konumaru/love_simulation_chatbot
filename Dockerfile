@@ -15,6 +15,7 @@ ARG DEV=false
 RUN if [ "$DEV" = "true" ] ; then poetry install --with dev ; else poetry install --only main ; fi
 
 COPY ./app/ ./
+COPY ./data/ ./data/
 COPY ./prompts/ ./prompts/
 
 EXPOSE $PORT
