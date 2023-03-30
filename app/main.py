@@ -1,11 +1,11 @@
 import os
 
-from bot import Bot
+from .bot import ChatBot
 from fastapi import FastAPI, Header, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.models import MessageEvent, TextMessage, TextSendMessage, FollowEvent
 
 app = FastAPI()
 
@@ -20,8 +20,6 @@ else:
 
 line_bot_api = LineBotApi(LINEAPI_ACCESS_TOKEN)
 handler = WebhookHandler(LINEAPI_CHANNEL_SECRET)
-
-bot = Bot()
 
 
 @app.get("/")
@@ -45,29 +43,40 @@ async def callback(
     return Response(content="OK", status_code=status.HTTP_200_OK)
 
 
-@handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
-    event_text = str(event.message.text)
+@handler.add(FollowEvent)
+def follow_message(event) -> None:
     sender_id = str(event.source.sender_id)
-    reply_token = str(event.reply_token)
-
-    # TODO: 初回フォロー時に保存する
     profile = line_bot_api.get_profile(sender_id)
     display_name = str(profile.display_name)
 
-    message = ""
-    # if event_text == "start":
-    #     message += bot.first_talk()
-    # elif event_text == "init":
-    #     bot.init_conversation()
-    # elif event_text == "base_data":
-    #     message = bot.base_data
-    # else:
-    #     message = bot.talk(event_text)
+    bot = ChatBot(sender_id, display_name, initialize=True)
 
-    # line_bot_api.reply_message(
-    #     reply_token,
-    #     # TextSendMessage(text=message),
-    #     TextSendMessage(text=event_text),
-    # )
-    line_bot_api.push_message(sender_id, TextSendMessage(text=event_text))
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=bot.backgroud),
+    )
+
+    first_message = bot.talk("")
+    line_bot_api.push_message(
+        sender_id,
+        TextSendMessage(text=first_message),
+    )
+    bot.save_memory()
+
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event) -> None:
+    sender_id = str(event.source.sender_id)
+    profile = line_bot_api.get_profile(sender_id)
+    display_name = str(profile.display_name)
+    bot = ChatBot(sender_id, display_name)
+    bot.load_memory()
+
+    event_text = str(event.message.text)
+    message = bot.talk(event_text)
+
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=message),
+    )
+    bot.save_memory()

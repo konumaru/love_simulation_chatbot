@@ -15,4 +15,4 @@ ngrok:
 
 .PHONY: run
 run:
-	uvicorn main:app --host 0.0.0.0 --port $PORT --reload
+	uvicorn main:app --host 0.0.0.0 --port ${PORT} --reload
