@@ -1,12 +1,12 @@
 import os
 
+import uvicorn
+from bot import ChatBot
 from fastapi import FastAPI, Header, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage, FollowEvent
-
-from bot import ChatBot
+from linebot.models import FollowEvent, MessageEvent, TextMessage, TextSendMessage
 
 app = FastAPI()
 
@@ -81,3 +81,16 @@ def handle_message(event) -> None:
         TextSendMessage(text=message),
     )
     bot.save_memory()
+
+
+def main() -> None:
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=int(os.environ["PORT"]),
+        reload=True,
+    )
+
+
+if __name__ == "__main__":
+    main()

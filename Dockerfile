@@ -19,4 +19,4 @@ COPY ./data/ ./data/
 COPY ./prompts/ ./prompts/
 
 EXPOSE $PORT
-CMD uvicorn main:app --host 0.0.0.0 --port $PORT --reload
+CMD python main.py
