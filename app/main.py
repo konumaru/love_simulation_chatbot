@@ -6,7 +6,12 @@ from fastapi import FastAPI, Header, HTTPException, Request, Response, status
 from fastapi.responses import HTMLResponse
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import FollowEvent, MessageEvent, TextMessage, TextSendMessage
+from linebot.models import (
+    FollowEvent,
+    MessageEvent,
+    TextMessage,
+    TextSendMessage,
+)
 
 app = FastAPI()
 

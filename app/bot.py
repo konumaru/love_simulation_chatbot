@@ -1,22 +1,21 @@
-import time
-from contextlib import contextmanager
-import re
+import pathlib
 import pickle
 import random
-import pathlib
-from typing import List, Any
-
-from langchain.prompts import (
-    ChatPromptTemplate,
-    MessagesPlaceholder,
-    SystemMessagePromptTemplate,
-    HumanMessagePromptTemplate,
-)
-from langchain.schema import HumanMessage, SystemMessage
+import re
+import time
+from contextlib import contextmanager
+from typing import Any, List
 
 from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferWindowMemory
+from langchain.prompts import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+)
+from langchain.schema import HumanMessage, SystemMessage
 
 
 @contextmanager
@@ -61,10 +60,14 @@ class ChatBot:
                 self.charactor_name,
             )
 
-            self.memory = ConversationBufferWindowMemory(k=20, return_messages=True)
+            self.memory = ConversationBufferWindowMemory(
+                k=20, return_messages=True
+            )
             self.conversation = self._get_conversation(self.memory)
         else:
-            self.charactor_name = self._load_txt(str(self.save_dir / "charactor_name"))
+            self.charactor_name = self._load_txt(
+                str(self.save_dir / "charactor_name")
+            )
             self.memory = self.load_pickle(str(self.save_dir / "memory.pkl"))
             self.conversation = self._get_conversation(self.memory)
 
@@ -91,7 +94,10 @@ class ChatBot:
         prompt = self._load_txt(self.gen_charactor_filepath)
         prompt = prompt.format(age=world)
 
-        messages = [SystemMessage(content=prompt), HumanMessage(content="Start")]
+        messages = [
+            SystemMessage(content=prompt),
+            HumanMessage(content="Start"),
+        ]
         res = self.llm(messages)
         content = res.content
         return content
