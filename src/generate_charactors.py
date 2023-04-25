@@ -2,13 +2,6 @@ from langchain.callbacks import get_openai_callback
 from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
-from langchain.prompts import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    MessagesPlaceholder,
-    SystemMessagePromptTemplate,
-)
-from langchain.schema import HumanMessage, SystemMessage
 
 
 def count_tokens(chain, query):
@@ -34,26 +27,20 @@ def get_charactor_settings(prompt: str) -> str:
         max_retries=2,
         temperature=0.9,  # type: ignore
     )
-    conversation = ConversationChain(
-        llm=llm,
-        verbose=False,
-        memory=ConversationBufferMemory(),
-    )
+    memory = ConversationBufferMemory()
+    conversation = ConversationChain(llm=llm, verbose=False, memory=memory)
 
-    result = conversation.run(input=prompt)
-    result = conversation.run(
-        input="Please summarize in 300 words the details of the character and translate into Japanese."
-    )
+    _ = conversation.run(input=prompt)
+    result = conversation.run(input="日本語で300文字程度に要約して")
     return result
 
 
 def main():
     prompt = load_txt("data/prompts/generate_charactor.txt")
 
-    setting = get_charactor_settings(prompt)
-    print(setting)
-
-    dump_txt("data/prompts/charactor/A.txt", setting)
+    for i in range(50):
+        setting = get_charactor_settings(prompt)
+        dump_txt(f"data/prompts/charactor/{i:06}.txt", setting)
 
 
 if __name__ == "__main__":
