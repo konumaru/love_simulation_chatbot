@@ -39,11 +39,11 @@ class ChatBot:
 
         self.llm = ChatOpenAI(
             model_name="gpt-3.5-turbo",
-            top_p=0.5,
-            temperature=1,
-            frequency_penalty=2,
+            top_p=0.5,  # type: ignore
+            temperature=1,  # type: ignore
+            frequency_penalty=2,  # type: ignore
             max_tokens=2000,
-        )  # type: ignore
+        )
 
         self.charactor_name = ""
         self.save_dir = pathlib.Path(f"./data/{partner_user_id}")
@@ -88,6 +88,7 @@ class ChatBot:
     def _save_txt(self, filepath, txt) -> str:
         with open(filepath, "w") as file:
             file.write(txt)
+        return "saved text"
 
     def gen_background(self) -> str:
         world = self._get_age()

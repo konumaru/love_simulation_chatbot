@@ -75,12 +75,11 @@ def handle_message(event) -> None:
     sender_id = str(event.source.sender_id)
     profile = line_bot_api.get_profile(sender_id)
     display_name = str(profile.display_name)
+    event_text = str(event.message.text)
+
     bot = ChatBot(sender_id, display_name)
     bot.load_memory()
-
-    event_text = str(event.message.text)
     message = bot.talk(event_text)
-
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=message),
