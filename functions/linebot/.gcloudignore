@@ -1,0 +1,8 @@
+# ignore all
+*
+
+# upload list
+!.
+!main.py
+!requirements.txt
+!utils/**

@@ -15,11 +15,6 @@ deploy: # Deploy the Linebot app on google cloud run.
 	./bin/deploy.sh
 
 
-.PHONY: ngrok
-run-local: # Run the Linebot app on local for testing.
-	ngrok http 8080
-
-
 .PHONY: run
 run:
 	python app/main.py

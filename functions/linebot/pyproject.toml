@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "linebot"
+version = "0.1.0"
+description = ""
+authors = ["konumaru <konumaru1022@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.1"
+functions-framework = "^3.3.0"
+line-bot-sdk = "^2.4.2"
+openai = "^0.27.4"
+langchain = "^0.0.149"
+google-cloud-storage = "^2.8.0"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.3.0"
+isort = "^5.12.0"
+mypy = "^1.2.0"
+pyproject-flake8 = "^6.0.0.post1"
+pytest = "^7.3.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
