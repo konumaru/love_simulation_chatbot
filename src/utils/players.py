@@ -3,9 +3,13 @@ import pickle
 
 from langchain.chains import ConversationChain
 from langchain.chat_models import ChatOpenAI
-from langchain.llms import OpenAI
-from langchain.memory import ConversationSummaryBufferMemory
-from langchain.prompts import PromptTemplate
+from langchain.memory import ConversationBufferWindowMemory
+from langchain.prompts import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+)
 
 
 class ChatBot:
@@ -19,38 +23,45 @@ class ChatBot:
         self.charactor_id = charactor_id
         self.memory_filepath = memory_filepath
         self.memory = self.load_memory()
-        self.prompt = PromptTemplate(
-            template=prompt_template,
-            input_variables=["history", "input"],
-        )
+        self.prompt_template = prompt_template
         self.conversation = self._init_conversation()
 
         self.name = "ChatBot"
 
     def _init_conversation(self) -> ConversationChain:
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                SystemMessagePromptTemplate.from_template(
+                    self.prompt_template
+                ),
+                MessagesPlaceholder(variable_name="history"),
+                HumanMessagePromptTemplate.from_template("{input}"),
+            ]
+        )
+
         llm = ChatOpenAI(
             model_name="gpt-3.5-turbo",
             top_p=0.5,  # type: ignore
-            temperature=0.7,  # type: ignore
+            temperature=0.3,  # type: ignore
             frequency_penalty=2,  # type: ignore
-            max_tokens=2000,
+            max_tokens=2500,
         )
         conversation = ConversationChain(
-            llm=llm, memory=self.memory, prompt=self.prompt, verbose=False
+            llm=llm, memory=self.memory, prompt=prompt, verbose=False
         )
         return conversation
 
     def talk(self, message: str) -> str:
-        response = self.conversation.run(input=message)
+        response = self.conversation.predict(input=message)
         return response
 
-    def load_memory(self) -> ConversationSummaryBufferMemory:
+    def load_memory(self) -> ConversationBufferWindowMemory:
         if os.path.exists(self.memory_filepath):
             with open(self.memory_filepath, "rb") as f:
                 return pickle.load(f)
         else:
-            return ConversationSummaryBufferMemory(
-                llm=OpenAI(), max_token_limit=100  # type: ignore
+            return ConversationBufferWindowMemory(
+                k=self.window_size, return_messages=True
             )
 
     def save_memory(self) -> None:

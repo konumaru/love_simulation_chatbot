@@ -27,11 +27,8 @@ def main() -> None:
     gcs = GCSFileManager(os.environ["GCS_BUCKET_NAME"])
 
     user_id = "".join([str(random.randint(0, 9)) for _ in range(10)])
-    # user_id = "3704497891"
-    user_id = "8560551488"
 
-    system_prompt = gcs.read_file("prompts/start_conversation_v2.txt")
-    system_prompt = system_prompt.decode("utf-8")
+    system_prompt = get_system_prompt(gcs)
 
     is_first = True
     game_settings_filepath = f"game/{user_id}.pkl"
@@ -69,12 +66,14 @@ def main() -> None:
                 bot = ChatBot(
                     charactor_id,
                     system_prompt,
-                    f"./data/tmp/memory/{user_id}.pkl",
+                    f"./data/tmp/memory_{user_id}.pkl",
                 )
                 response = bot.talk("")
                 print(f"{bot.name}:", response, "\n")
                 bot.save_memory()
-                gcs.update_file(bot.memory_filepath, f"memory/{user_id}.pkl")
+                gcs.update_file(
+                    bot.memory_filepath, f"tmp/memory_{user_id}.pkl"
+                )
         else:
             game_settings = gcs.read_file_as_pickle(game_settings_filepath)
 
@@ -90,9 +89,9 @@ def main() -> None:
             bot = ChatBot(
                 game_settings["charactor_id"],
                 system_prompt,
-                f"./data/tmp/memory/{user_id}.pkl",
+                f"./data/tmp/memory_{user_id}.pkl",
             )
-            gcs.download_file(f"memory/{user_id}.pkl", bot.memory_filepath)
+            gcs.download_file(f"tmp/memory_{user_id}.pkl", bot.memory_filepath)
             bot.load_memory()
 
             response = bot.talk(message)
