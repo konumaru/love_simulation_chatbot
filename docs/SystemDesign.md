@@ -17,3 +17,7 @@
 3. Please send your name.
 4. Start a conversation with the chatbot.
    1. The story progresses by choosing an action from four options or by acting freely.
+
+## LINE Message API
+
+[Admin](https://developers.line.biz/console/channel/1660787517/messaging-api?status=success)

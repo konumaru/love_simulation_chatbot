@@ -1,5 +1,7 @@
 # gpt_love
 
+<img src="./docs/img/demo.png" width=360>
+
 ## Commands
 
 ```sh
@@ -7,5 +9,15 @@
 deploy: Deploy the Linebot app on google cloud run.
 help: Show help for each of the Makefile recipes.
 init: Initialize the project of gcp.
-run-local: Run the Linebot app on local for testing.
+```
+
+## Usage
+
+```sh
+# Upload Prompt
+python src/upload_prompts.py
+
+# Deploy bot to cloud function
+cd functions/linebot
+make deploy
 ```
