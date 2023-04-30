@@ -21,6 +21,7 @@ deploy: # Deploy the Linebot app on google cloud run.
 		--entry-point $(ENTORY_POINT) \
 		--trigger-http \
 		--timeout=600 \
+		--memory=512MB \
 		--set-env-vars "LINEAPI_ACCESS_TOKEN=${LINEAPI_ACCESS_TOKEN}" \
 		--set-env-vars "LINEAPI_CHANNEL_SECRET=${LINEAPI_CHANNEL_SECRET}" \
 		--set-env-vars "OPENAI_API_KEY=${OPENAI_API_KEY}" \

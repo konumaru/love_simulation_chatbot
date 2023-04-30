@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 
 .envrc
+*.pkl
 sa-private-key.json

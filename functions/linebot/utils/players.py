@@ -58,14 +58,5 @@ class ChatBot:
             saved_dir = os.path.dirname(self.memory_filepath)
             os.makedirs(saved_dir, exist_ok=True)
 
-        with open(self.__module__, "wb") as f:
+        with open(self.memory_filepath, "wb") as f:
             pickle.dump(self.memory, f)
-
-
-class User:
-    def __init__(
-        self, user_id: str, user_name: str, charactor_id: str
-    ) -> None:
-        self.user_id = user_id
-        self.user_name = user_name
-        self.conversation_charactor_id = charactor_id

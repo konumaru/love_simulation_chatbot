@@ -77,6 +77,12 @@ def main() -> None:
                 gcs.update_file(bot.memory_filepath, f"memory/{user_id}.pkl")
         else:
             game_settings = gcs.read_file_as_pickle(game_settings_filepath)
+
+            # Recieve message from user.
+            message = input(f"{game_settings['user_name']}: ")
+            if message == "exit":
+                break
+
             charactor = get_charactor(gcs, game_settings["charactor_id"])
             system_prompt = system_prompt.replace(
                 "{charactor_settings}", charactor["summary"]
@@ -88,10 +94,6 @@ def main() -> None:
             )
             gcs.download_file(f"memory/{user_id}.pkl", bot.memory_filepath)
             bot.load_memory()
-
-            message = input(f"{game_settings['user_name']}: ")
-            if message == "exit":
-                break
 
             response = bot.talk(message)
             bot.save_memory()
