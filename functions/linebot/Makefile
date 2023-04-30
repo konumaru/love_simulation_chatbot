@@ -24,6 +24,7 @@ deploy: # Deploy the Linebot app on google cloud run.
 		--set-env-vars "LINEAPI_ACCESS_TOKEN=${LINEAPI_ACCESS_TOKEN}" \
 		--set-env-vars "LINEAPI_CHANNEL_SECRET=${LINEAPI_CHANNEL_SECRET}" \
 		--set-env-vars "OPENAI_API_KEY=${OPENAI_API_KEY}" \
+		--set-env-vars "GCS_BUCKET_NAME=${GCS_BUCKET_NAME}" \
 		--ignore-file=.gcloudignore \
 		--allow-unauthenticated
 	rm requirements.txt

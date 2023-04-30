@@ -16,6 +16,7 @@ transformers = "^4.27.3"
 rich = "^13.3.4"
 functions-framework = "^3.3.0"
 google-cloud-storage = "^2.8.0"
+tiktoken = "^0.3.3"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.1.0"

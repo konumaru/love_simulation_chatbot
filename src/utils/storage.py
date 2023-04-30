@@ -1,4 +1,5 @@
 import os
+import pickle
 from typing import List
 
 from google.cloud import storage
@@ -24,6 +25,11 @@ class GCSFileManager:
         blob = bucket.blob(remote_path)
         return blob.download_as_string()
 
+    def read_file_as_pickle(self, remote_path):
+        bucket = self.client.bucket(self.bucket_name)
+        blob = bucket.blob(remote_path)
+        return pickle.loads(blob.download_as_bytes())
+
     def update_file(self, file_path, remote_path):
         bucket = self.client.bucket(self.bucket_name)
         blob = bucket.blob(remote_path)
@@ -38,3 +44,17 @@ class GCSFileManager:
         bucket = self.client.bucket(self.bucket_name)
         blobs = bucket.list_blobs(prefix=directory)
         return [blob.name for blob in blobs if not blob.name.endswith("/")]
+
+    def exists(self, remote_path):
+        bucket = self.client.bucket(self.bucket_name)
+        blob = bucket.blob(remote_path)
+        return blob.exists()
+
+    def download_file(self, remote_path, local_path):
+        """
+        :param remote_path: GCSのファイル名
+        :param local_path: ダウンロード先のローカルファイルパス
+        """
+        bucket = self.client.bucket(self.bucket_name)
+        blob = bucket.blob(remote_path)
+        blob.download_to_filename(local_path)
