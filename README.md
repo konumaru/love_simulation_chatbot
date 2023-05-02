@@ -1,4 +1,4 @@
-# gpt_love
+# Love Simulation Chatbot
 
 <img src="./docs/img/demo.png" width=360>
 
