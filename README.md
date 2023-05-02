@@ -14,6 +14,12 @@ init: Initialize the project of gcp.
 ## Usage
 
 ```sh
+# Set enviroment variables
+cp .envrc.template .envrc
+
+# Generate Charactors
+python src/generate_charactors.py
+
 # Upload Prompt
 python src/upload_prompts.py
 
